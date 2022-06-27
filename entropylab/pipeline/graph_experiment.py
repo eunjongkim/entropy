@@ -739,11 +739,12 @@ class Graph(ExperimentDefinition):
                 f"{[node.label for node in all_ancestors.difference(self._original_nodes)]}"
             )
 
-        self._actual_graph: Set[_NodeExecutionInfo] = _create_actual_graph(
-            self._original_nodes, self._key_nodes
-        )
         self._to_node: Optional[Node] = None
         self._execution_type: GraphExecutionType = execution_type
+
+    @property
+    def _actual_graph(self) -> Set[_NodeExecutionInfo]:
+        return _create_actual_graph(self._original_nodes, self._key_nodes)
 
     def _get_execution_instructions(self) -> ExperimentExecutor:
         executors = {node.node: _NodeExecutor(node) for node in self._actual_graph}
